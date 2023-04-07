@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "src/*": ["src/*"],
+      "suites/*": ["suites/*"]
+    },
+    "lib": ["ES6", "DOM"],
+    "target": "ES6",
+    "resolveJsonModule": true,
+    "moduleResolution": "node"
+  }
+}

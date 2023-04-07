@@ -1,0 +1,17 @@
+{
+  "printWidth": 120,
+  "semi": true,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "all",
+  "arrowParens": "always",
+  "endOfLine": "lf",
+  "overrides": [
+    {
+      "files": "*.es5.js",
+      "options": {
+        "trailingComma": "none"
+      }
+    }
+  ]
+}

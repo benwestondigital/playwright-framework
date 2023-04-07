@@ -1,0 +1,56 @@
+include:
+  - '/.gitlab/merge_pipelines.yml'
+
+stages:
+  - test
+  - allure
+
+default:
+  image: mcr.microsoft.com/playwright:v1.25.0-focal
+
+cache:
+  key: $CI_COMMIT_REF_SLUG
+  paths:
+    - .npm/
+
+.test_template: &test_template
+  stage: test
+  tags:
+    - generic_experimental
+    - 2xlarge
+  variables:
+    JOB_ID: placeholder
+  before_script:
+    - echo $SQUAD
+    - echo $ENVIRONMENT
+    - npm ci
+    - npx playwright install --with-deps
+  script:
+    - npx playwright test --project=$SQUAD-$ENVIRONMENT
+  after_script:
+    - echo "ENVIRONMENT=${ENVIRONMENT}" >> vars.env
+    - echo "SQUAD=${SQUAD}" >> vars.env
+    - find allure-results -name '*.png' -delete
+    - find allure-results -name '*.ZIP' -delete
+  artifacts:
+    when: always
+    paths:
+      - test-results/
+      - allure-results/
+    reports:
+      junit: test-results/junit.xml
+      dotenv: vars.env
+    expire_in: 6 hours
+
+checkout-dev:
+  extends: .test_template
+  rules:
+    - if: $SQUAD =~ /checkout/i && $ENVIRONMENT =~ /dev/i
+      when: always
+    - when: never
+  script:
+    - npx playwright test --project=$SQUAD-$ENVIRONMENT-$DOMAIN
+  parallel:
+    matrix:
+      - DOMAIN: [uk, nl, ie, be]
+

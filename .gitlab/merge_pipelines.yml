@@ -1,0 +1,34 @@
+.merge_template: &merge_template
+  stage: test
+  tags:
+    - generic_experimental
+    - 2xlarge
+  variables:
+    ENVIRONMENT: dev
+  before_script:
+    - npm ci
+    - npx playwright install --with-deps
+  script:
+    - npx playwright test --project=$SQUAD-$ENVIRONMENT
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+  artifacts:
+    when: always
+    paths:
+      - test-results/
+    reports:
+      junit: test-results/junit.xml
+    expire_in: 6 hours
+
+checkout-merge:
+  extends: .merge_template
+  variables:
+    SQUAD: checkout
+  rules:
+    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /^checkout/
+  script:
+    - npx playwright test --project=$SQUAD-$ENVIRONMENT-$DOMAIN
+  parallel:
+    matrix:
+      - DOMAIN: [uk, nl, ie, be]
+        ENVIRONMENT: [dev, prod]
