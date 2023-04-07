@@ -1,16 +1,14 @@
 import { test, expect } from 'src/fixtures/test';
 
-test.describe('all', () => {
-  test.beforeAll(async ({ basket }) => {
-    // beforeAll
-  });
+test.describe('guest', () => {
+  test.beforeAll(async ({}) => {});
 
   test.beforeEach(async ({ basket, baseURL }, testInfo) => {
     await basket.goToBasket();
   });
 
   test.describe('checks', () => {
-  /* 
+    /* 
   - increment basket quantity
   -  */
     test('1 - Basket with subscription item(s)', async ({ basket, baseURL, page }) => {
@@ -24,12 +22,12 @@ test.describe('all', () => {
     });
 
     test('2 - Add and remove from Save for later', async ({ basket }) => {
-/*       await basket.addSaveForLater(productOne);
+      /*       await basket.addSaveForLater(productOne);
       await basket.removeSaveForLater(); */
     });
 
     test('3 - Add to Save for later and re-add', async ({ basket }) => {
-    /*   await basket.addSaveForLater(productOne);
+      /*   await basket.addSaveForLater(productOne);
       await basket.addToBasketFromSaveForLater(productOne); */
     });
 
@@ -135,6 +133,4 @@ test.afterEach(async ({ basket }, testInfo) => {
   }
 });
 
-test.afterAll(async ({ }) => {
-  // afterAll
-});
+test.afterAll(async ({}) => {});

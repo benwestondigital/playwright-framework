@@ -1,27 +1,30 @@
 import { test, expect } from 'src/fixtures/test';
 import { AuthHandler } from 'src/fixtures/AuthHandler';
+import { userDetails } from 'src/pages/Checkout/data/user.data';
 
-test.describe('all', () => {
+test.describe('signed-in', () => {
   test.use({
     Account: {
       useLogin: true,
       loginOverride: {
         enabled: true,
-        email: 'hbiqeauto+bentesting@gmail.com',
-        password: 'Qwerty@123',
+        email: userDetails.email,
+        password: userDetails.password,
       },
     },
   });
 
-  test.beforeAll(async ({ basket }) => {
-    //  beforeAll
+  test.beforeAll(async ({}) => {
+    if (!userDetails.email || !userDetails.password) {
+      throw new Error('Add EMAIL and PASSWORD to .env file to allow signed-in tests to run.');
+    }
   });
 
   test.beforeEach(async ({ basket }, testInfo) => {
     await basket.goToBasket();
   });
 
-  test('Merge basket respects item quantity limit @noprod', async ({ basket, page, baseURL }) => {
+  test('1 - Merge basket respects item quantity limit', async ({ basket, page, baseURL }) => {
     test.skip(!baseURL.includes('preprod'), 'triggering CAPTCHA on prod');
 
     const authHandler = new AuthHandler(page);
@@ -37,7 +40,7 @@ test.describe('all', () => {
     // expect(await quantitySelector.inputValue()).toBe(localisation[basket.domain].quantityLimit.toString());
   });
 
-  test('BC_016 - Bid is cleared on logout @noprod', async ({ page, basket, baseURL }) => {
+  test('2 - Basket is emptied on logout', async ({ page, basket, baseURL }) => {
     test.skip(!baseURL.includes('preprod'), 'triggering CAPTCHA on prod');
 
     await basket.checkProductAttributes();
@@ -59,6 +62,4 @@ test.afterEach(async ({ basket }, testInfo) => {
   }
 });
 
-test.afterAll(async ({ }) => {
-  // afterAll
-});
+test.afterAll(async ({}) => {});

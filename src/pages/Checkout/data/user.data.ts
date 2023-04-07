@@ -4,11 +4,11 @@ dotenv.config();
 
 // Login Details
 export type LoginDetails = {
-  username: string;
+  email: string;
   password: string;
 };
 
 export const userDetails: LoginDetails = {
-  username: process.env.USERNAME,
+  email: process.env.EMAIL,
   password: process.env.PASSWORD,
 };
