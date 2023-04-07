@@ -27,7 +27,7 @@ The above commands will:
 - Install Node Modules
 - Then open the repo in VSCode
 
-Create a .env file and add your USERNAME and PASSWORD to allow the tests to signed-in tests to run.
+Create a .env file and add your EMAIL and PASSWORD to allow the tests to signed-in tests to run.
 
 **More Information**
 More Info can be found on my [portfolio](benweston.dev)
