@@ -15,19 +15,16 @@ It currently targets [Amazon](https://amazon.co.uk), but can be translated to ot
 - Copy & Paste the following into your terminal
 
 ```
-git clone git@gitlab.com:HnBI/qa-test/bx-online/content_e2e.git
-sh content_e2e/scripts/install.sh
-code content_e2e
+git clone git@github.com:benwestondigital/playwright-framework.git
+cd playwright-framework
+npm i
+code .
 ```
 
-The above command will:
+The above commands will:
 
 - Clone the repo
-- Add the 'code' command to your $PATH
-- Ensure Git ignores the Pages branch
 - Install Node Modules
-- Install VSCode Extensions
-- Ensure you have a local config for playwright
 - Then open the repo in VSCode
 
 **More Information**
