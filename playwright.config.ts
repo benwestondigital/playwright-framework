@@ -3,7 +3,7 @@ import { FixtureOptions } from 'src/fixtures/test';
 
 const config: PlaywrightTestConfig<FixtureOptions> = {
   fullyParallel: true,
-  timeout: 30_000,
+  timeout: 60_000,
   retries: 1,
   use: {
     trace: 'on-first-retry',

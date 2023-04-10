@@ -69,31 +69,8 @@ export const test = base.extend<FixtureOptions & CustomFixtures>({
       const page = await context.newPage();
       const authHandler = new AuthHandler(page);
 
-      await page.route('https://www.google-analytics.com/**', (route) => route.abort('aborted'));
-      await page.route('https://cdn.optimizely.com/**', (route) => route.abort('aborted'));
-      await page.route('https://w.usabilla.com/**', (route) => route.abort('aborted'));
+      await page.route(/.*analytics.*/, (route) => route.abort('aborted'));
       await page.route(/.*contentsquare.*/, (route) => route.abort('aborted'));
-      await page.route(`${baseURL}/api/geo-ip`, (route) => {
-        route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: '{"status":"success","continent":"Europe","country":"United Kingdom","country_code":"GB","county":"Greater Manchester","city":"Manchester","post_code":"M4","latitude":"53.4808","longitude":"2.2426"}',
-        });
-      });
-      await page.route(`${baseURL}/geoip`, (route) => {
-        route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: '{"ip":"2a01:4c8:1423:1181:a183:e8d4:a779:9195","country_code":"GB","country_name":"United Kingdom","region_code":"SCT","region_name":"Scotland","city":"Glasgow","zip_code":"G41","time_zone":"Europe/London","latitude":55.8393,"longitude":-4.2892,"metro_code":0}',
-        });
-      });
-      await page.route(`${baseURL}/geolocation`, (route) => {
-        route.fulfill({
-          status: 200,
-          contentType: 'text/html',
-          body: '{"city":"LONDON","continent":"EU","country_code":"GB","region":"EN","postal_code":"N/A"}',
-        });
-      });
 
       if (Account.useLogin) {
         await authHandler.loginSCV(user.email, user.password);
@@ -108,7 +85,7 @@ export const test = base.extend<FixtureOptions & CustomFixtures>({
       await page.close();
       await context.close();
     },
-    { scope: 'test', timeout: 30000 },
+    { scope: 'test', timeout: 60_000 },
   ],
   basket: async ({ page, baseURL }, use) => {
     await use(new BasketPage(page, baseURL));

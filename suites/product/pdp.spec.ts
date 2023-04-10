@@ -27,3 +27,12 @@ test('should add product to basket', async ({ page }) => {
   expect(basket.commerceItems[0].availabilityStatus).toBe('INSTOCK');
   expect(+(await page.getByTestId('basket-amount').innerText())).toBe(1);
 });
+
+test('should show in-store stock', async ({ page }) => {
+  await Promise.all([
+    page.waitForResponse((res) => res.url().match(/store-data/) && res.ok() && res.request().method() === 'GET'),
+    page.getByRole('button', { name: 'Check in-store stock' }).click(),
+  ]);
+
+  expect(page.locator('ul[class*="StoreStock_store-stock-popup-shops-list"]')).toBeVisible();
+});
