@@ -6,6 +6,7 @@ import {
   Checkout,
   PaymentPage,
   User,
+  HomePage,
   generateRandomUser,
   generateSemiRandomUser,
 } from 'src/fixtures/index';
@@ -28,6 +29,7 @@ type CustomFixtures = {
   basket: BasketPage;
   checkout: Checkout;
   payment: PaymentPage;
+  home: HomePage;
 };
 
 // used for checkout/payment flow fake data
@@ -110,6 +112,9 @@ export const test = base.extend<FixtureOptions & CustomFixtures>({
   ],
   basket: async ({ page, baseURL }, use) => {
     await use(new BasketPage(page, baseURL));
+  },
+  home: async ({ page, baseURL }, use) => {
+    await use(new HomePage(page, baseURL));
   },
   checkout: async ({ page, baseURL }, use) => {
     await use(new Checkout(page, baseURL, fakeUser));
