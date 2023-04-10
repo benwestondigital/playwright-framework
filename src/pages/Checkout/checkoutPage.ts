@@ -139,7 +139,7 @@ export class Checkout extends BasePage {
     await this.deliveryMethod.addressLine1Text.waitFor();
     await this.deliveryMethod.addressLine1.fill(this.user.address.line1);
     await this.deliveryMethod.city.fill(this.user.address.city);
-    await this.deliveryMethod.postcode.fill(this.fakerPostCodes[this.domain]);
+    // await this.deliveryMethod.postcode.fill(this.fakerPostCodes[this.domain]);
   }
 
   async deliveryDetails(): Promise<void> {
@@ -151,7 +151,7 @@ export class Checkout extends BasePage {
     await this.deliveryDetailsPage.addressLine1Label.click();
     await this.deliveryDetailsPage.addressLine1Input.fill(this.user.address.line1);
     await this.deliveryDetailsPage.cityInput.fill(this.user.address.city);
-    await this.deliveryDetailsPage.postcodeInput.fill(this.fakerPostCodes[this.domain]);
+    // await this.deliveryDetailsPage.postcodeInput.fill(this.fakerPostCodes[this.domain]);
 
     await Promise.all([
       this.page.waitForURL(/\/checkout\/delivery\/options/),
@@ -172,7 +172,7 @@ export class Checkout extends BasePage {
       this.page.waitForURL(/.*\/\/auth(?:-ie|-nl|-be)?\.hollandandbarrett.*/),
       this.signIn.signIn.click(),
     ]);
-    await this.signIn.emailAddress.fill(userDetails.username);
+    // await this.signIn.emailAddress.fill(userDetails.username);
     await this.signIn.password.fill(userDetails.password);
     await Promise.all([this.page.waitForNavigation(), this.signIn.authSignIn.click()]);
     await expect(this.page).toHaveURL(/.*\/checkout\/delivery/);

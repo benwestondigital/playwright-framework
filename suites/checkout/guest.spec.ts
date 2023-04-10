@@ -3,7 +3,12 @@ import { test, expect } from 'src/fixtures/test';
 test.describe('guest', () => {
   test.beforeAll(async ({}) => {});
 
-  test.beforeEach(async ({ basket, baseURL }, testInfo) => {
+  test.beforeEach(async ({ page, basket }) => {
+    await page.goto('/');
+    await page.getByTestId('nav-electricals').getByRole('link', { name: 'Electricals' }).hover();
+    await Promise.all([page.waitForURL(/televisions/), page.getByTestId('nav-televisions').click()]);
+    await page.getByRole('link', { name: /inch/ }).first().click();
+    await page.getByTestId('basket:add').click();
     await basket.goToBasket();
   });
 
@@ -11,16 +16,6 @@ test.describe('guest', () => {
     /* 
   - increment basket quantity
   -  */
-    test('1 - Basket with subscription item(s)', async ({ basket, baseURL, page }) => {
-      await expect(page.locator('.incentive')).toContainText('Get these benefits from your second order onwards:');
-      await expect(page.locator('.incentive')).toContainText('The best price from the last 90 days');
-      await expect(page.locator('.incentive')).toContainText('Free delivery on orders over £10');
-      await basket.selectSubscriptionCheckbox();
-      await basket.checkChangeSubFrequency();
-      await basket.selectOneTimeDelivery();
-      await basket.checkPayPalDisabledForSubOrders();
-    });
-
     test('2 - Add and remove from Save for later', async ({ basket }) => {
       /*       await basket.addSaveForLater(productOne);
       await basket.removeSaveForLater(); */
@@ -37,12 +32,6 @@ test.describe('guest', () => {
       await basket.clickCheckoutButton();
     });
 
-    test('6 - Verify Checkout Welcome Page', async ({ basket, checkout }) => {
-      await basket.checkProductAttributes();
-      await basket.clickCheckoutButton();
-      await checkout.guestCheckout();
-    });
-
     test('7 - Checkout Welcome Page - Sign In at Checkout', async ({ basket, checkout, baseURL }) => {
       await basket.checkProductAttributes();
       await basket.clickCheckoutButton();
@@ -56,20 +45,6 @@ test.describe('guest', () => {
 });
 
 test.describe('add to basket', () => {
-  test('9 - Add to basket from product page', async ({ page, basket, baseURL }) => {
-    // const productURL = await basket.getProductURL(productOne.name);
-    // await page.goto(`/${productURL}`);
-    const [res] = await Promise.all([
-      page.waitForResponse((res) => res.status() === 200 && res.url().includes('/api/pdp/addtobasket')),
-      page.click('[data-test="add-to-basket"]'),
-    ]);
-    if (!res.ok()) {
-      throw Error(`Bad response from API. Status: ${res.status()} - ${res.statusText()}`);
-    }
-    const response = await res.json();
-    expect(response.status).toBe('ADDED');
-  });
-
   test('10 - Add to basket from product listing page', async ({ page, basket }) => {
     // await page.goto(localisation[basket.domain].plpUrl);
     // await page.waitForURL(localisation[basket.domain].plpUrl);

@@ -6,9 +6,44 @@ export class StorageState {
     this.state = {
       cookies: [
         {
-          sameSite: 'Lax',
-          name: 'hbi-force-control',
-          value: 'true',
+          sameSite: 'None',
+          name: 'JOHNLEWIS_ENSIGHTEN_PRIVACY_BANNER_VIEWED',
+          value: '1',
+          url: this.baseURL,
+          expires: 1893488400,
+        },
+        {
+          sameSite: 'None',
+          name: 'JOHNLEWIS_ENSIGHTEN_PRIVACY_Advertising',
+          value: '1',
+          url: this.baseURL,
+          expires: 1893488400,
+        },
+        {
+          sameSite: 'None',
+          name: 'JOHNLEWIS_ENSIGHTEN_PRIVACY_Analytics',
+          value: '1',
+          url: this.baseURL,
+          expires: 1893488400,
+        },
+        {
+          sameSite: 'None',
+          name: 'JOHNLEWIS_ENSIGHTEN_PRIVACY_Essentials',
+          value: '1',
+          url: this.baseURL,
+          expires: 1893488400,
+        },
+        {
+          sameSite: 'None',
+          name: 'JOHNLEWIS_ENSIGHTEN_PRIVACY_Functional',
+          value: '1',
+          url: this.baseURL,
+          expires: 1893488400,
+        },
+        {
+          sameSite: 'None',
+          name: 'JOHNLEWIS_ENSIGHTEN_PRIVACY_Personalisation',
+          value: '1',
           url: this.baseURL,
           expires: 1893488400,
         },

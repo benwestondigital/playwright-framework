@@ -12,12 +12,27 @@ const config: PlaywrightTestConfig<FixtureOptions> = {
   },
   projects: [
     {
-      name: 'checkout-dev-uk',
+      name: 'basket',
       use: {
-        baseURL: 'https://holland-barrett-clone.vercel.app/',
+        baseURL: 'https://www.johnlewis.com/',
       },
-      timeout: 90_000,
+      testDir: 'suites/basket',
+      grep: /@com/,
+    },
+    {
+      name: 'checkout',
+      use: {
+        baseURL: 'https://www.johnlewis.com/',
+      },
       testDir: 'suites/checkout',
+      grep: /@com/,
+    },
+    {
+      name: 'payments',
+      use: {
+        baseURL: 'https://www.johnlewis.com/',
+      },
+      testDir: 'suites/payments',
       grep: /@com/,
     },
   ],
