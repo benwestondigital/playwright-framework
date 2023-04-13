@@ -1,6 +1,6 @@
 export class StorageState {
   private baseURL: string;
-  private state: any;
+  private state: State;
   constructor(url: string) {
     this.baseURL = url;
     this.state = {
@@ -48,20 +48,22 @@ export class StorageState {
           expires: 1893488400,
         },
       ],
-      origins: [
-        {
-          origin: this.baseURL,
-          localStorage: [],
-        },
-      ],
     };
-  }
-
-  public get getBaseURL(): string {
-    return this.baseURL;
   }
 
   public get getState(): any {
     return this.state;
   }
 }
+
+type Cookie = {
+  sameSite: string;
+  name: string;
+  value: string;
+  url: string;
+  expires: number;
+};
+
+type State = {
+  cookies: Cookie[];
+};

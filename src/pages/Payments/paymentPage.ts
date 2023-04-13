@@ -11,29 +11,4 @@ export class PaymentPage extends Checkout {
     super(page, baseURL, user);
     this.page = page;
   }
-
-  async payNowCheckoutBtn(): Promise<void> {
-    await this.page.waitForLoadState('domcontentloaded');
-    await this.page.click('input#STANDARD_DELIVERY');
-    // await this.paypal.checkoutPayNow.click();
-  }
-
-  async handle3DSScreen(): Promise<void> {
-    await this.page.fill('input#username', 'user');
-    await this.page.fill('input#password', 'password');
-    await Promise.all([this.page.waitForURL('/checkout/confirmation'), this.page.click('input[type="submit"]')]);
-  }
-
-  //CARD
-  async clickOnCardPaymentRadio(): Promise<void> {
-    await this.card.cardRadio.click();
-    await this.card.submitPaymentBtn.scrollIntoViewIfNeeded();
-  }
-
-  async clickOnCardPaymentRadioV5(): Promise<void> {
-    /* await Promise.all([this.page.waitForResponse(/initialise/), this.cardV5.cardRadio.click()]);
-    if ((await this.card.submitPaymentBtn.count()) > 0) {
-      await this.card.submitPaymentBtn.scrollIntoViewIfNeeded();
-    } */
-  }
 }

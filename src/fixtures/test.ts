@@ -8,19 +8,14 @@ import {
   User,
   HomePage,
   generateRandomUser,
-  generateSemiRandomUser,
 } from 'src/fixtures/index';
 import { AuthHandler } from './AuthHandler';
 
 export type FixtureOptions = {
   Account: {
     randomUser?: boolean;
-    useLogin: boolean;
-    loginOverride: {
-      enabled: boolean;
-      email?: string;
-      password?: string;
-    };
+    email?: string;
+    password?: string;
   };
 };
 
@@ -32,31 +27,25 @@ type CustomFixtures = {
   home: HomePage;
 };
 
-// used for checkout/payment flow fake data
-const fakeUser = generateRandomUser();
-
 /**
  * Extends Playwright's test fixture.
  */
+
+let account = generateRandomUser();
 
 export const test = base.extend<FixtureOptions & CustomFixtures>({
   Account: [
     {
       randomUser: false,
-      useLogin: false,
-      loginOverride: {
-        enabled: false,
-        email: '',
-        password: '',
-      },
+      email: '',
+      password: '',
     },
     { scope: 'test', option: true },
   ],
   user: async ({ Account }, use) => {
-    let account = Account.randomUser ? generateRandomUser() : generateSemiRandomUser();
     const user = (() => {
-      if (Account.loginOverride.enabled) {
-        account = { ...account, email: Account.loginOverride.email, password: Account.loginOverride.password };
+      if (Account.email) {
+        account = { ...account, email: Account.email, password: Account.password };
       }
       return account;
     })();
@@ -72,20 +61,20 @@ export const test = base.extend<FixtureOptions & CustomFixtures>({
       await page.route(/.*analytics.*/, (route) => route.abort('aborted'));
       await page.route(/.*contentsquare.*/, (route) => route.abort('aborted'));
 
-      if (Account.useLogin) {
-        await authHandler.loginSCV(user.email, user.password);
+      if (Account.email) {
+        await authHandler.login(user.email, user.password);
       }
 
       await use(page);
 
       // Teardown page fixture
-      if (Account.useLogin) {
-        await authHandler.logoutSCV();
+      if (Account.email) {
+        await authHandler.logout();
       }
       await page.close();
       await context.close();
     },
-    { scope: 'test', timeout: 60_000 },
+    { scope: 'test', timeout: 30_000 },
   ],
   basket: async ({ page, baseURL }, use) => {
     await use(new BasketPage(page, baseURL));
@@ -94,10 +83,10 @@ export const test = base.extend<FixtureOptions & CustomFixtures>({
     await use(new HomePage(page, baseURL));
   },
   checkout: async ({ page, baseURL }, use) => {
-    await use(new Checkout(page, baseURL, fakeUser));
+    await use(new Checkout(page, baseURL, account));
   },
   payment: async ({ page, baseURL }, use) => {
-    await use(new PaymentPage(page, baseURL, fakeUser));
+    await use(new PaymentPage(page, baseURL, account));
   },
 });
 export { expect } from '@playwright/test';

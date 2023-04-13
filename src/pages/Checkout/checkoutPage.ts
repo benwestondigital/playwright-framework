@@ -184,13 +184,13 @@ export class Checkout extends BasePage {
   }
 
   async guestCheckout(): Promise<void> {
-    await this.welcomeGuest.email.fill(this.user.fakeEmail);
+    await this.welcomeGuest.email.fill(this.user.email);
     await Promise.all([this.page.waitForNavigation(), this.welcomeGuest.continueToDelivery.click()]);
     await expect(this.page).toHaveURL(/.*\/checkout\/delivery/);
   }
 
   async fillGuestEmail(): Promise<void> {
-    await this.page.fill('input#email', this.user.fakeEmail);
+    await this.page.fill('input#email', this.user.email);
     await Promise.all([this.page.waitForURL('checkout/delivery'), this.page.click('button[type="submit"]')]);
   }
 

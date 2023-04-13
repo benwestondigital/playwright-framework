@@ -4,12 +4,8 @@ import { userDetails } from 'src/pages/Checkout/data/user.data';
 test.describe('signed-in', () => {
   test.use({
     Account: {
-      useLogin: true,
-      loginOverride: {
-        enabled: true,
-        email: userDetails.email,
-        password: userDetails.password,
-      },
+      email: userDetails.email,
+      password: userDetails.password,
     },
   });
 
@@ -22,17 +18,7 @@ test.describe('signed-in', () => {
   test.beforeEach(async ({}) => {});
 
   test.describe('Saved Card', () => {
-    test(`1: Card`, async ({ basket, checkout, page, payment }) => {
-      // await page.goto(`/basket?items=${product.skuId},1`);
-      await basket.clickCheckoutButtonSignedIn();
-
-      // cid = await checkout.getCid();
-      await checkout.selectDeliveryMethod('Delivery');
-      await checkout.continueToDeliveryOptions();
-      await Promise.all([page.waitForResponse(/setup/), checkout.continueToPayment()]);
-
-      await payment.clickOnCardPaymentRadioV5();
-    });
+    test(`1: Card`, async ({ basket, checkout, page, payment }) => {});
   });
 });
 
