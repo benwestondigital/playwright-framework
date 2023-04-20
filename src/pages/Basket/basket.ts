@@ -1,11 +1,15 @@
 import { expect, TestInfo, Locator } from '@playwright/test';
 import { Page } from 'playwright';
-import * as data from './basketPage.data';
+import * as data from './basket.data';
+import { Product } from './basket.data';
 import { BasePage } from '../BasePage';
+import { OrderBasketResponse } from './basket.types';
 
 export class BasketPage extends BasePage {
   readonly page: Page;
-  public bid: string;
+  public basket_id: string;
+  public product: Product;
+  public errors: any;
 
   readonly CTA: PageElementLocator;
   readonly plp: PageElementLocator;
@@ -16,25 +20,39 @@ export class BasketPage extends BasePage {
   constructor(page: Page, baseURL: string) {
     super(page, '/basket', baseURL);
     this.page = page;
+
+    [this.product] = data.products;
   }
 
-  //*                       Agnostic Methods
-  //*  ===============================================================
+  async loadBasket(): Promise<void> {
+    const payLoad = { quantity: 1, skuId: this.product.skuId, variantId: this.product.variantId };
+    const res = await this.page.request.post(
+      `https://api.johnlewis.com/basket-ui/basket/items/${this.product.variantId}`,
+      {
+        data: payLoad,
+        headers: {
+          'x-api-client-id': 'standard_pdp_ui',
+        },
+      },
+    );
 
-  async loadBasket() {
-    const payLoad = {};
-    const res = await this.page.request.post(`https://api.johnlewis.com/basket-ui/basket/items/${data.variantIds[0]}`, {
-      data: payLoad,
-    });
+    if (!res.ok()) {
+      throw new Error(`Bad response from basket - ${res.status()} - ${res.statusText()}.`);
+    }
+
+    const data: OrderBasketResponse = await res.json();
+    const { errors, basket } = data;
+    this.basket_id = basket?.deliveryQualifications?.basketId;
+    this.errors = errors;
   }
-
-  // General
 
   logErrorInfo(testInfo: TestInfo): void {
     const retry = testInfo.retry ? ` retry ${testInfo.retry}` : '';
+    const errors = this.errors ? `errors: ${this.errors}` : '';
     console.log(`
     Test ${testInfo.title}${retry} failed. Info:
-    bid: ${this.bid}
+    basket_id: ${this.basket_id}
+    ${errors}
     
     `);
   }
@@ -85,15 +103,12 @@ export class BasketPage extends BasePage {
   async clickCheckoutButton(): Promise<void> {
     await Promise.all([this.page.waitForURL(/.*\/checkout/), this.CTA.proceedToCheckout.click()]);
   }
-}
 
-export type FetchedProduct = {
-  skuId: string;
-  available: boolean;
-  subscribable: boolean;
-  price: number;
-  stock?: number;
-  name?: string;
-};
+  async getProductInfo(data): Promise<Product[]> {
+    return data.basket.commerceItems.map(({ skuId, productId, variantId }) => {
+      return { skuId, productId, variantId };
+    });
+  }
+}
 
 export type PageElementLocator = Record<string, Locator>;
