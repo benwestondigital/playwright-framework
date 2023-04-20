@@ -37,8 +37,6 @@ const config: PlaywrightTestConfig<FixtureOptions> = {
     },
   ],
   workers: process.env.CI ? 2 : 4,
-  reporter: process.env.CI
-    ? [['allure-playwright'], ['junit', { outputFile: 'test-results/junit.xml' }], ['line']]
-    : 'line',
+  reporter: 'line',
 };
 export default config;
