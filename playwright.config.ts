@@ -36,19 +36,9 @@ const config: PlaywrightTestConfig<FixtureOptions> = {
       grep: /@com/,
     },
   ],
-  workers: process.env.CI ? 6 : 4,
+  workers: process.env.CI ? 2 : 4,
   reporter: process.env.CI
     ? [['allure-playwright'], ['junit', { outputFile: 'test-results/junit.xml' }], ['line']]
     : 'line',
-  expect: {
-    toHaveScreenshot: {
-      threshold: 0.2,
-      maxDiffPixelRatio: 0.2,
-    },
-    toMatchSnapshot: {
-      threshold: 0.2,
-      maxDiffPixelRatio: 0.2,
-    },
-  },
 };
 export default config;
