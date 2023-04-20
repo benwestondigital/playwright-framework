@@ -9,46 +9,27 @@ const config: PlaywrightTestConfig<FixtureOptions> = {
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     browserName: 'chromium',
+    baseURL: 'https://www.johnlewis.com/',
   },
   projects: [
     {
       name: 'basket',
-      use: {
-        baseURL: 'https://www.johnlewis.com/',
-      },
       testDir: 'suites/basket',
-      grep: /@com/,
     },
     {
       name: 'checkout',
-      use: {
-        baseURL: 'https://www.johnlewis.com/',
-      },
       testDir: 'suites/checkout',
-      grep: /@com/,
     },
     {
       name: 'payments',
-      use: {
-        baseURL: 'https://www.johnlewis.com/',
-      },
       testDir: 'suites/payments',
-      grep: /@com/,
+    },
+    {
+      name: 'product',
+      testDir: 'suites/product',
     },
   ],
-  workers: process.env.CI ? 6 : 4,
-  reporter: process.env.CI
-    ? [['allure-playwright'], ['junit', { outputFile: 'test-results/junit.xml' }], ['line']]
-    : 'line',
-  expect: {
-    toHaveScreenshot: {
-      threshold: 0.2,
-      maxDiffPixelRatio: 0.2,
-    },
-    toMatchSnapshot: {
-      threshold: 0.2,
-      maxDiffPixelRatio: 0.2,
-    },
-  },
+  workers: process.env.CI ? 2 : 4,
+  reporter: 'line',
 };
 export default config;

@@ -3,7 +3,7 @@ import { expect } from '@playwright/test';
 import { User } from 'src/fixtures';
 import * as data from './checkout.data';
 import { BasePage } from 'src/pages/BasePage';
-import { PageElementLocator } from 'src/pages/Basket/basketPage';
+import { PageElementLocator } from 'src/pages/Basket/basket';
 import { faker } from '@faker-js/faker';
 import { userDetails } from './data/user.data';
 

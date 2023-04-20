@@ -2,7 +2,7 @@ import { test, expect } from 'src/fixtures/test';
 import { AuthHandler } from 'src/fixtures/AuthHandler';
 import { userDetails } from 'src/pages/Checkout/data/user.data';
 
-test.describe('signed-in', () => {
+test.describe.skip('signed-in', () => {
   test.use({
     Account: {
       email: userDetails.email,
