@@ -2,7 +2,7 @@
 
 An automation framework built using [Playwright](https://playwright.dev/). This framrwork is for testing an ecommerce website to ensure features are functioning correctly and user journeys are working as intended.
 
-It currently targets [Amazon](https://amazon.co.uk), but can be translated to other domains.
+It targets [John Lewis](https://amazon.co.uk), the website for one of the UK's biggest and most well-known brands.
 
 ## Quick Start Guide:
 
@@ -30,4 +30,5 @@ The above commands will:
 Create a .env file and add your EMAIL and PASSWORD to allow the tests to signed-in tests to run.
 
 **More Information**
+
 More Info can be found on my [portfolio](benweston.dev)
