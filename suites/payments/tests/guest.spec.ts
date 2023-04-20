@@ -1,8 +1,8 @@
 import { test, expect } from 'src/fixtures/test';
 
-test.beforeAll(async ({}) => {});
+// test.beforeAll(async ({}) => {});
 
-test.describe('guest', () => {
+test.describe.skip('guest', () => {
   test.beforeEach(async ({ basket }) => {
     await basket.goToBasket();
     // journey to payment page

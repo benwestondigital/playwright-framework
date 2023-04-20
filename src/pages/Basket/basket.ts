@@ -49,9 +49,10 @@ export class BasketPage extends BasePage {
   logErrorInfo(testInfo: TestInfo): void {
     const retry = testInfo.retry ? ` retry ${testInfo.retry}` : '';
     const errors = this.errors ? `errors: ${this.errors}` : '';
+    const basketId = this.basket_id ? `basket_id: ${this.basket_id}` : '';
     console.log(`
-    Test ${testInfo.title}${retry} failed. Info:
-    basket_id: ${this.basket_id}
+    Test ${testInfo.title}${retry} failed. ${basketId || errors ? 'Info: ' : ''}
+    ${basketId}
     ${errors}
     
     `);
